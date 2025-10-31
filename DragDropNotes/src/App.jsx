@@ -9,8 +9,15 @@ function App() {
     text:"This is the second note"},
   ]);
 
+  const [note,setNote]=useState("")
+
   return (
     <div>
+      <div>
+        <input type="text" value={note} placeholder="New note text" onChange={e=> setNote(e.target.value)} />
+        <button onClick={()=>{ setNotes([...notes,{id:notes.length, text: note}])
+        setNote("")}}>Add Note</button>
+      </div>
       <Notes notes={notes} setNotes={setNotes} />
     </div>
   )

@@ -7,10 +7,10 @@ const Note = forwardRef(({content, initialPos, ...props}, ref) => {
         top: initialPos?.y,
         left: initialPos?.x,
       }}
-      className="absolute border-b-black border-2 w-42 bg-yellow-200 cursor-move select-none p-2" 
+      className="absolute border-b-black border-2 w-48 bg-yellow-200 cursor-move select-none p-2" 
       {...props}
     >
-      📌{content}
+      📌{content}✖️
     </div>
   );
 })
