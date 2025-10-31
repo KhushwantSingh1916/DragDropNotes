@@ -4,7 +4,6 @@ import Note from './note.jsx';
 function Notes({ notes = [], setNotes = () => {} }) {
   const noteRefs = useRef({});
 
-  // Load notes from localStorage or assign random positions
   useEffect(() => {
     const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
 
@@ -19,14 +18,7 @@ function Notes({ notes = [], setNotes = () => {} }) {
 
     setNotes(notesWithPositions);
     localStorage.setItem("notes", JSON.stringify(notesWithPositions));
-  }, []); // only run once on mount
-
-  // Save to localStorage when notes change
-  useEffect(() => {
-    if (notes.length > 0) {
-      localStorage.setItem("notes", JSON.stringify(notes));
-    }
-  }, [notes]);
+  }, []);
 
   const determinePosition = () => {
     const x = Math.floor(Math.random() * (window.innerWidth - 200));
@@ -57,12 +49,33 @@ function Notes({ notes = [], setNotes = () => {} }) {
       const finalRect = noteRef.current.getBoundingClientRect();
       const newPosition = { x: finalRect.left, y: finalRect.top };
 
-      updateNotePosition(id, newPosition);
+      if (checkForOverlap(id)){
+        noteRef.current.style.left = `${note.position.x}px`;
+        noteRef.current.style.top = `${note.position.y}px`;
+      } else {
+        updateNotePosition(id, newPosition);
+      }
     };
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
+   const checkForOverlap = (id) => {
+    const currentNoteRef = noteRefs.current[id];
+    const rect = currentNoteRef.current.getBoundingClientRect();
+    return notes.some(note => {
+      if (note.id === id) return false;
+      const otherNoteRef = noteRefs.current[note.id];
+      if (!otherNoteRef?.current) return false;
+      const otherRect = otherNoteRef.current.getBoundingClientRect();
+      return !(
+        rect.right < otherRect.left ||
+        rect.left > otherRect.right ||
+        rect.bottom < otherRect.top ||
+        rect.top > otherRect.bottom
+      );
+    });
+   };
 
   const updateNotePosition = (id, newPosition) => {
     const updatedNotes = notes.map(note =>
