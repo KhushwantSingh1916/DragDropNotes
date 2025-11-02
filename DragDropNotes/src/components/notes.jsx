@@ -1,7 +1,7 @@
 import React, { useRef, createRef } from 'react';
 import Note from './note.jsx';
 
-function Notes({ notes = [], setNotes = () => {} }) {
+function Notes({ notes = [], setNotes = () => {}, onDelete = () => {} }) {
   const noteRefs = useRef({});
 
   const handleDrag = (note, e) => {
@@ -77,6 +77,9 @@ function Notes({ notes = [], setNotes = () => {} }) {
             initialPos={note.position}
             content={note.text}
             onMouseDown={(e) => handleDrag(note, e)}
+            onDelete={() => {
+              console.log('Note delete triggered for id:', note.id);
+              onDelete(note.id);}}
           />
         );
       })}

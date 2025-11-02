@@ -12,19 +12,22 @@ const Note = forwardRef(({content, initialPos, onDelete, ...props}, ref) => {
       {...props}
     >
       <div className="flex justify-between items-start">
-        <span>📌</span>
+        <span className='text-lg'>📌</span>
         <button 
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
           }}
           className="cursor-pointer hover:scale-110 transition-transform"
-          style={{ background: 'none', border: 'none', fontSize: '16px' }}
+          style={{ background: 'none', border: 'none', fontSize: '16px', cursor: 'pointer' }}
         >
           ✖️
         </button>
       </div>
-      <div className="mt-1">{content}</div>
+      <div className="">{content}</div>
     </div>
   );
 })

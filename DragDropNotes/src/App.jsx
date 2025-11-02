@@ -2,31 +2,26 @@ import { useState, useEffect } from 'react';
 import Notes from './components/notes';
 
 function App() {
-  const [notes, setNotes] = useState([]);
-  const [note, setNote] = useState("");
-
-  // Load notes from localStorage on initial render
-  useEffect(() => {
+  const [notes, setNotes] = useState(() => {
     const savedNotes = localStorage.getItem("notes");
     if (savedNotes) {
-      setNotes(JSON.parse(savedNotes));
+      return JSON.parse(savedNotes);
     } else {
-      // If no saved notes, create a default first note
       const defaultNote = {
         id: 1,
         text: "This is the first note",
-        position: determinePosition()
+        position: {
+          x: Math.floor(Math.random() * (window.innerWidth - 250)),
+          y: Math.floor(Math.random() * (window.innerHeight - 250))
+        }
       };
-      setNotes([defaultNote]);
-      localStorage.setItem("notes", JSON.stringify([defaultNote]));
+      return [defaultNote];
     }
-  }, []);
+  });
+  const [note, setNote] = useState("");
 
-  // Save notes to localStorage whenever notes change
   useEffect(() => {
-    if (notes.length > 0) {
-      localStorage.setItem("notes", JSON.stringify(notes));
-    }
+    localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
   const determinePosition = () => {
