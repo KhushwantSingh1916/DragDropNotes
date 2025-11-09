@@ -48,7 +48,7 @@ function App() {
   };
 
   return (
-    <div className='relative flex justify-center items-start min-h-screen bg-gradient-to-b from-[#BBC863] from-60% to-[#31694E] pt-24 overflow-hidden'>
+    <div className='relative flex justify-center items-start min-h-screen bg-linear-to-b from-[#BBC863] from-60% to-[#31694E] pt-24 overflow-hidden'>
     <div className="fixed inset-x-0 top-8 flex justify-center z-50">
       <form
         onSubmit={(e) => { e.preventDefault(); handleAddNote(); }}
